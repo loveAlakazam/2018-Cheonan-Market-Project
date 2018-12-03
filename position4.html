@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"> 
+	<title>오복갈비집 위치</title>
+	<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=dg4mb2tuj3"> </script>
+</head>
+<body>
+	<div id="map" style="width:100%;height:350px;"></div>
+	<script>
+	var mapOptions={
+		zoomControl:true,
+		zoomControlOptions:{
+			style:naver.maps.ZoomControlStyle.SMALL,
+			position: naver.maps.Position.TOP_RIGHT
+		},
+		center: new naver.maps.LatLng(36.809248, 127.148770),
+		zoom:10
+	};
+	//지도표시
+	var map= new naver.maps.Map('map', mapOptions);
+	
+	//현재위치 위도, 경도 정보
+	var now_position= new naver.maps.LatLng(36.809192, 127.148748);
+	
+	//현재 위치
+	var now= new naver.maps.Marker({
+		map:map,
+		position: now_position,
+		title:'현재위치',
+	});
+	
+	//목적지 위치(웰빙마늘떡볶이집)
+	var dest= new naver.maps.Marker({
+		position: new naver.maps.LatLng(36.810075, 127.149560),
+		map:map,
+		title:'오복갈비집',
+		animation: naver.maps.Animation.BOUNCE
+	});
+
+
+	//목적지 위치 정보창 내용
+	var content_dest=[
+		'<div class="iw_inner">',
+		'	<p>오복갈비집</p>',
+		'</div>'
+	].join('');
+
+
+	//목적지 위치 - 정보창(웰빙 마늘떡볶이 집)
+	var dest_info = new naver.maps.InfoWindow({
+		content: content_dest,
+		borderColor:"#f02c8c"
+	});
+	dest_info.open(map,dest);
+	</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"> 
+	<title>현재 위치</title>
+	<script type="text/javascript" 	src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=dg4mb2tuj3"> 
+	</script>
+</head>
+<body>
+	<div id="map" style="width:100%;height:350px;"></div>
+	<script>
+	//지도 옵션
+	var mapOptions={
+		zoomControl: true,
+		zoomControlOptions:{
+			style:naver.maps.ZoomControlStyle.SMALL,
+			position: naver.maps.Position.TOP_RIGHT
+		},
+		//center을 천안 역전시장으로..
+		center: new naver.maps.LatLng(36.809248, 127.148770),
+		zoom:10
+	};
+	//지도 표시
+	var map= new naver.maps.Map('map', mapOptions);
+
+	//마커위에 정보창 올리기
+	var contentString=[
+		'<div class="iw_inner">',
+		'	<h4>천안 역전 시장 입구</h4>',
+		'</div>'
+	].join('');
+	
+	//현재 위치 마커
+	var marker = new naver.maps.Marker({
+		//천안 역전 시장 입구를 표시.
+		position: new naver.maps.LatLng(36.809192, 127.148748),
+		map: map
+	});
+	
+	var infowindow = new naver.maps.InfoWindow({
+		content: contentString
+	});
+
+	infowindow.open(map, marker);
+	naver.maps.Event.addListener(marker, "click", function(e){
+		if(infowindow.getMap()){
+			infowindow.close();
+		}else{
+			infowindow.open(map, marker);
+		}
+	});
+	</script>
+</body>
+</html>

@@ -164,8 +164,17 @@ def speechToText():
                   for content in audio_generator)
 
         responses= client.streaming_recognize(streaming_config, requests)
-
-        listen_print_loop(responses, stream)
+    
+        isAccessSpeech= listen_print_loop(responses, stream)
+        #isAccessSpeech ==0: ,구글스피치 종료
+        #아니면 계속 진행
+        while(isAccessSpeech !=0):
+                               
+        
+                
+        else:#구글스피치 계속 활성화
+                
+                
 
 def listen_print_loop(responses, mic):
     num_chars_printed= 0
@@ -189,7 +198,9 @@ def listen_print_loop(responses, mic):
             mic.pause() #pause => isPause=True
             cmd_return_number= command_process(stt=transcript)
             if cmd_return_number==0: #command_process값이 0이면 종료
-                break
+                #break
+                return 0
+                 
             elif cmd_return_number >=2:
                 
                 #지도 API를 이용하여 답변을 해주는 부분이다.
@@ -211,12 +222,12 @@ def listen_print_loop(responses, mic):
                     #현재위치를 지도상 위치정보를 갖는다.
                     url='file:///home/pi/cheoan_project/position5.html'
                     webbrowser.open(url,'utf-8')
-                
-            mic.restart() #restart=> isPause=False
+            return 1
+            #mic.restart() #restart=> isPause=False
  
 
 # [Command Process fundtion : 명령처리함수..]
-def command_process(stt):
+def command_process(stt): #skill process(스킬을 이용한 명령처리- 응답처리)
     cmd =stt.strip()
     print('나: '+str(cmd))
     #명령리스트(cmdLists) 안의 명령과 비교하여 확인
@@ -254,7 +265,11 @@ def main():
         hello.tts_play(fname='hello')
     
         # 사용자가 말한 명령을 text로 변환시킨다.
-        speechToText()
+        command_processed=speechToText()
+        if command_processed==0:
+                break
+        else:
+                continue
     
         # 사용자가 말한 명령이 skills 리스트에 해당하는지 확인
         # 없다면 '죄송합니다. 잘 못알아 들었습니다.'라고 대답.
